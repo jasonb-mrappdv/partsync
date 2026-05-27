@@ -5,7 +5,7 @@ import StatusBadge from '@/components/StatusBadge';
 import { Plus, Camera, X, Upload } from 'lucide-react';
 
 const ISSUE_TYPES = ['Damaged in Transit', 'Wrong Item', 'Defective'];
-const LOG_STATUSES = ['Reported', 'Under Review', 'Resolved'];
+const LOG_STATUSES = ['Reported', 'Returned', 'Credited', 'Denied'];
 
 function ReturnModal({ onClose, onSave, vendors }) {
   const [form, setForm] = useState({

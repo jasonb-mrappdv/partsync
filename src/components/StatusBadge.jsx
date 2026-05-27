@@ -8,6 +8,9 @@ export default function StatusBadge({ status }) {
     Reported:         { bg: '#7c1d1d', text: '#fca5a5', label: 'Reported' },
     'Under Review':   { bg: '#78350f', text: '#fcd34d', label: 'Under Review' },
     Resolved:         { bg: '#14532d', text: '#4ade80', label: 'Resolved' },
+    Returned:         { bg: '#1e3a5f', text: '#7fb5d4', label: 'Returned' },
+    Credited:         { bg: '#14532d', text: '#4ade80', label: 'Credited' },
+    Denied:           { bg: '#3b1e1e', text: '#f87171', label: 'Denied' },
   };
 
   const cfg = configs[status] || { bg: '#1e293b', text: '#94a3b8', label: status };

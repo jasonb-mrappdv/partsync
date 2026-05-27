@@ -33,8 +33,9 @@
       "type": "string",
       "enum": [
         "Reported",
-        "Under Review",
-        "Resolved"
+        "Returned",
+        "Credited",
+        "Denied"
       ],
       "default": "Reported"
     },
