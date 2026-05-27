@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext';
-import { LayoutDashboard, ShoppingCart, RotateCcw, Building2, BarChart3, Wrench, Store } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, RotateCcw, Building2, BarChart3, Wrench, Store, Eye } from 'lucide-react';
 
 const adminLinks = [
   { label: 'Dashboard', path: '/', icon: LayoutDashboard },
@@ -8,6 +8,9 @@ const adminLinks = [
   { label: 'Returns & Log', path: '/returns', icon: RotateCcw },
   { label: 'Vendor Mgmt', path: '/vendors', icon: Building2 },
   { label: 'Reports', path: '/reports', icon: BarChart3 },
+  // Admin-only previews for demo / impersonation
+  { label: 'Vendor Preview', path: '/vendor-portal', icon: Eye, preview: true },
+  { label: 'User Preview', path: '/technician-portal', icon: Eye, preview: true },
 ];
 
 const vendorLinks = [
@@ -45,18 +48,20 @@ export default function Layout() {
 
           {/* Nav Links — centered */}
           <div className="flex items-center gap-0">
-            {navLinks.map(({ label, path }) => {
+            {navLinks.map(({ label, path, preview }) => {
               const isActive = location.pathname === path;
               return (
                 <Link
                   key={path}
                   to={path}
-                  className="px-4 h-16 flex items-center text-sm font-medium transition-colors border-b-2"
+                  className="px-4 h-16 flex items-center text-sm font-medium transition-colors border-b-2 gap-1.5"
                   style={{
                     color: isActive ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))',
                     borderBottomColor: isActive ? 'hsl(var(--primary))' : 'transparent',
                   }}
+                  title={preview ? 'Admin preview — view the portal as another role would see it' : undefined}
                 >
+                  {preview && <Eye className="w-3.5 h-3.5 opacity-70" />}
                   {label}
                 </Link>
               );

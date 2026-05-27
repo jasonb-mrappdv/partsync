@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import SectionCard from '@/components/SectionCard';
 import StatusBadge from '@/components/StatusBadge';
-import { Camera, X, AlertTriangle, Package, RotateCcw, CheckCircle } from 'lucide-react';
+import { Camera, X, AlertTriangle, Package, RotateCcw, CheckCircle, Eye } from 'lucide-react';
 
 const ISSUE_TYPES = ['Damaged in Transit', 'Wrong Item', 'Defective'];
 
@@ -148,8 +148,19 @@ export default function TechnicianPortal() {
     <div className="flex items-center justify-center h-64 text-muted-foreground">Loading your portal...</div>
   );
 
+  const isAdmin = user?.role === 'admin';
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
+      {isAdmin && (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-primary/30 bg-primary/10">
+          <Eye className="w-4 h-4 text-primary shrink-0" />
+          <span className="text-sm text-primary font-medium">Admin Preview:</span>
+          <span className="text-sm text-white/90">
+            Viewing the Technician / User portal as a technician would see it. Showing all non-cancelled orders and return logs.
+          </span>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Technician Portal</h1>
