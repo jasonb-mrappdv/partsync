@@ -29,3 +29,9 @@ dist-ssr
 
 .env
 .vite
+
+# Cloudflare / Wrangler
+.dev.vars
+.wrangler
+data/*.json
+data/*.sql

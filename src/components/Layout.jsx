@@ -38,29 +38,10 @@ export default function Layout() {
       <nav className="sticky top-0 z-50 border-b border-border bg-popover">
         <div className="flex items-center justify-between px-6 h-16">
 
-          {/* Logo */}
-          <div className="flex items-center gap-3 min-w-[180px]">
-            {/* Chain link SVG — two clearly interlocking oval rings */}
-            <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Link 1 (orange) — horizontal oval, top-left */}
-              <ellipse cx="13" cy="14" rx="10" ry="5.5" stroke="#F97316" strokeWidth="3" fill="none" transform="rotate(-30 13 14)"/>
-              {/* Link 2 (white) — horizontal oval, bottom-right, overlapping center */}
-              <ellipse cx="25" cy="24" rx="10" ry="5.5" stroke="white" strokeWidth="3" fill="none" transform="rotate(-30 25 24)"/>
-              {/* Overlap mask so links appear to interlock — bottom of link1 hidden behind link2 */}
-              <ellipse cx="25" cy="24" rx="10" ry="5.5" stroke="hsl(210,28%,15%)" strokeWidth="3" fill="none"
-                transform="rotate(-30 25 24)"
-                strokeDasharray="10 100"
-                strokeDashoffset="-23"
-              />
-            </svg>
-            <div>
-              <div className="flex items-baseline">
-                <span className="text-white font-extrabold text-lg tracking-tight leading-none">PartFlow</span>
-                <span className="text-[#F97316] font-extrabold text-lg tracking-tight leading-none">Pro</span>
-              </div>
-              <p className="text-[10px] text-white/50 tracking-widest uppercase mt-0.5 leading-none">B2B Parts Link</p>
-            </div>
-          </div>
+          {/* Logo — uses the provided brand image directly */}
+          <Link to="/" className="flex items-center shrink-0" aria-label="PartFlowPro — B2B Parts Link">
+            <img src="/brand.png" alt="PartFlowPro — B2B Parts Link" className="h-10 w-auto select-none shrink-0" draggable={false} />
+          </Link>
 
           {/* Nav Links — centered */}
           <div className="flex items-center gap-0">
