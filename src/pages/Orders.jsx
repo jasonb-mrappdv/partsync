@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import SectionCard from '@/components/SectionCard';
 import StatusBadge from '@/components/StatusBadge';
-import { Plus, Upload, Search, X, ExternalLink, ChevronDown } from 'lucide-react';
+import { Plus, Upload, Search, X, ExternalLink, Ban, AlertCircle } from 'lucide-react';
 
-const STATUSES = ['Pending', 'In Transit', 'Shipped', 'Delivered', 'Cancelled'];
+const STATUSES = ['Pending', 'In Transit', 'Shipped', 'Delivered', 'Cancelled', 'Back Ordered'];
 
 function OrderModal({ order, vendors, onClose, onSave }) {
   const [form, setForm] = useState(order || {
@@ -86,6 +86,20 @@ function OrderModal({ order, vendors, onClose, onSave }) {
               className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background"
             />
           </div>
+          <div className="flex items-center gap-3 p-3 rounded-lg border border-yellow-900/40 bg-yellow-900/10">
+            <input type="checkbox" id="is_backordered" checked={!!form.is_backordered}
+              onChange={e => setForm(f => ({ ...f, is_backordered: e.target.checked }))}
+              className="w-4 h-4 accent-yellow-500" />
+            <label htmlFor="is_backordered" className="text-sm text-yellow-300 font-medium cursor-pointer">Mark as Back Ordered</label>
+          </div>
+          {form.is_backordered && (
+            <div>
+              <label className="block text-xs font-medium mb-1 text-muted-foreground">Est. Availability Date</label>
+              <input type="date" value={form.backorder_availability_date || ''}
+                onChange={e => setForm(f => ({ ...f, backorder_availability_date: e.target.value }))}
+                className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background" />
+            </div>
+          )}
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={onClose} className="px-4 py-2 rounded text-sm font-medium border border-border text-white hover:bg-white/5">Cancel</button>
             <button type="submit" className="px-4 py-2 rounded text-sm font-semibold text-white bg-primary">
@@ -218,6 +232,20 @@ export default function Orders() {
     fetchOrders();
   };
 
+  const handleCancel = async (id) => {
+    if (!confirm('Cancel this order?')) return;
+    await base44.entities.PartOrder.update(id, { status: 'Cancelled' });
+    fetchOrders();
+  };
+
+  const handleCancelBackorder = async (id) => {
+    if (!confirm('Cancel this back ordered part?')) return;
+    await base44.entities.PartOrder.update(id, { status: 'Cancelled', is_backordered: false });
+    fetchOrders();
+  };
+
+  const backOrdered = orders.filter(o => o.is_backordered && o.status !== 'Cancelled');
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between">
@@ -294,9 +322,60 @@ export default function Orders() {
                   </td>
                   <td className="px-4 py-3"><StatusBadge status={order.status} /></td>
                   <td className="px-4 py-3">
+                   <div className="flex gap-2">
+                     <button onClick={() => { setEditOrder(order); setShowModal(true); }} className="text-xs px-2 py-1 rounded border border-white/20 text-white hover:bg-white/10">Edit</button>
+                     {order.status !== 'Cancelled' && order.status !== 'Delivered' && (
+                       <button onClick={() => handleCancel(order.id)} className="text-xs px-2 py-1 rounded text-orange-400 border border-orange-900/50 hover:bg-orange-900/20 flex items-center gap-1">
+                         <Ban className="w-3 h-3" /> Cancel
+                       </button>
+                     )}
+                     <button onClick={() => handleDelete(order.id)} className="text-xs px-2 py-1 rounded text-red-400 border border-red-900/50 hover:bg-red-900/20">Del</button>
+                   </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
+      {/* Back Ordered Parts */}
+      <SectionCard title={
+        <span className="flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 text-yellow-500" />
+          Back Ordered Parts ({backOrdered.length})
+        </span>
+      }>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-background/50">
+                {['Part Number', 'PO #', 'Vendor', 'Customer', 'Est. Availability', 'Notes', 'Actions'].map(h => (
+                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {backOrdered.length === 0 ? (
+                <tr><td colSpan={7} className="text-center py-8 text-muted-foreground">No back ordered parts.</td></tr>
+              ) : backOrdered.map(order => (
+                <tr key={order.id} className="border-b border-border/40 hover:bg-white/5 transition-colors">
+                  <td className="px-4 py-3 font-mono text-xs text-primary">{order.part_number}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{order.purchase_order}</td>
+                  <td className="px-4 py-3 text-xs text-white">{order.vendor_name || '—'}</td>
+                  <td className="px-4 py-3 text-xs text-white">{order.customer_name || order.customer_email || '—'}</td>
+                  <td className="px-4 py-3 text-xs">
+                    {order.backorder_availability_date
+                      ? <span className="text-yellow-400 font-medium">{new Date(order.backorder_availability_date).toLocaleDateString()}</span>
+                      : <span className="text-muted-foreground/60">Not set</span>}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground max-w-[160px] truncate">{order.notes || '—'}</td>
+                  <td className="px-4 py-3">
                     <div className="flex gap-2">
                       <button onClick={() => { setEditOrder(order); setShowModal(true); }} className="text-xs px-2 py-1 rounded border border-white/20 text-white hover:bg-white/10">Edit</button>
-                      <button onClick={() => handleDelete(order.id)} className="text-xs px-2 py-1 rounded text-red-400 border border-red-900/50 hover:bg-red-900/20">Del</button>
+                      <button onClick={() => handleCancelBackorder(order.id)} className="text-xs px-2 py-1 rounded text-orange-400 border border-orange-900/50 hover:bg-orange-900/20 flex items-center gap-1">
+                        <Ban className="w-3 h-3" /> Cancel
+                      </button>
                     </div>
                   </td>
                 </tr>
