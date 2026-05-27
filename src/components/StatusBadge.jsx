@@ -2,7 +2,7 @@ export default function StatusBadge({ status }) {
   const configs = {
     Shipped:          { bg: '#14532d', text: '#4ade80', label: 'Shipped' },
     Pending:          { bg: '#7c2d12', text: '#fb923c', label: 'Pending' },
-    'In Transit':     { bg: '#1e3a5f', text: '#60a5fa', label: 'In Transit' },
+    'In Transit':     { bg: '#1e2e3f', text: '#7fb5d4', label: 'In Transit' },
     Delivered:        { bg: '#14532d', text: '#4ade80', label: 'Delivered' },
     Cancelled:        { bg: '#3b1e1e', text: '#f87171', label: 'Cancelled' },
     Reported:         { bg: '#7c1d1d', text: '#fca5a5', label: 'Reported' },

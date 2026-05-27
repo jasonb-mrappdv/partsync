@@ -47,10 +47,10 @@ module.exports = {
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         navy: {
-          900: '#0D1B2A',
-          800: '#102035',
-          700: '#1E3A5F',
-          600: '#1a3352',
+          900: '#111c27',
+          800: '#162031',
+          700: '#1e2e3f',
+          600: '#243447',
         },
         chart: {
           '1': 'hsl(var(--chart-1))',

@@ -17,8 +17,8 @@ const AuthenticatedApp = () => {
 
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center" style={{ backgroundColor: '#0D1B2A' }}>
-        <div className="w-8 h-8 border-4 border-blue-900 border-t-blue-500 rounded-full animate-spin"></div>
+      <div className="fixed inset-0 flex items-center justify-center" className="bg-background">
+        <div className="w-8 h-8 border-4 border-secondary border-t-primary rounded-full animate-spin"></div>
       </div>
     );
   }

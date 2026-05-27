@@ -43,13 +43,13 @@ export default function Reports() {
   });
   const issueData = Object.entries(issueMap).map(([name, value]) => ({ name, value }));
 
-  const tooltipStyle = { backgroundColor: '#152A45', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: 12 };
+  const tooltipStyle = { backgroundColor: 'hsl(210 28% 15%)', border: '1px solid hsl(210 24% 24%)', color: '#fff', fontSize: 12 };
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       <div>
         <h1 className="text-2xl font-bold text-white">Reports</h1>
-        <p className="text-sm mt-0.5" style={{ color: '#64748b' }}>Analytics and performance overview</p>
+        <p className="text-sm mt-0.5 text-muted-foreground">Analytics and performance overview</p>
       </div>
 
       {/* Summary stats */}
@@ -60,8 +60,8 @@ export default function Reports() {
           { label: 'Total Returns', value: returns.length },
           { label: 'Resolved Returns', value: returns.filter(r => r.log_status === 'Resolved').length },
         ].map(s => (
-          <div key={s.label} className="rounded-lg p-4 border border-white/10" style={{ backgroundColor: '#1E3A5F' }}>
-            <p className="text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>{s.label}</p>
+          <div key={s.label} className="rounded-lg p-4 border border-border bg-card">
+            <p className="text-xs font-medium mb-1 text-muted-foreground">{s.label}</p>
             <p className="text-3xl font-bold text-white">{s.value}</p>
           </div>
         ))}

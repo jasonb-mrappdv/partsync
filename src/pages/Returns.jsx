@@ -36,28 +36,27 @@ function ReturnModal({ onClose, onSave, vendors }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
-      <div className="w-full max-w-xl rounded-xl border border-white/10 overflow-hidden" style={{ backgroundColor: '#152A45' }}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <div className="w-full max-w-xl rounded-xl border border-border overflow-hidden bg-card">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <h3 className="text-lg font-semibold text-white">Log Damaged / Incorrect Part</h3>
           <button onClick={onClose}><X className="w-5 h-5 text-slate-400" /></button>
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/* Photo Upload */}
           <div>
-            <label className="block text-xs font-medium mb-2" style={{ color: '#94a3b8' }}>Part Photo</label>
+            <label className="block text-xs font-medium mb-2 text-muted-foreground">Part Photo</label>
             <div
               onClick={() => fileRef.current?.click()}
-              className="w-full h-36 rounded-lg border-2 border-dashed border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors overflow-hidden"
-              style={{ backgroundColor: '#0D1B2A' }}
+              className="w-full h-36 rounded-lg border-2 border-dashed border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors overflow-hidden bg-background"
             >
               {form.photo_url ? (
                 <img src={form.photo_url} alt="part" className="w-full h-full object-cover" />
               ) : uploading ? (
-                <p className="text-sm" style={{ color: '#94a3b8' }}>Uploading...</p>
+                <p className="text-sm text-muted-foreground">Uploading...</p>
               ) : (
                 <>
-                  <Camera className="w-8 h-8 mb-2" style={{ color: '#64748b' }} />
-                  <p className="text-sm" style={{ color: '#64748b' }}>Click to upload photo</p>
+                  <Camera className="w-8 h-8 mb-2 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground">Click to upload photo</p>
                 </>
               )}
             </div>
@@ -66,41 +65,41 @@ function ReturnModal({ onClose, onSave, vendors }) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Part Number *</label>
+              <label className="block text-xs font-medium mb-1 text-muted-foreground">Part Number *</label>
               <input required value={form.part_number} onChange={e => setForm(f => ({ ...f, part_number: e.target.value }))}
-                className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none" style={{ backgroundColor: '#0D1B2A' }} />
+                className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background" />
             </div>
             <div>
-              <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Purchase Order</label>
+              <label className="block text-xs font-medium mb-1 text-muted-foreground">Purchase Order</label>
               <input value={form.purchase_order} onChange={e => setForm(f => ({ ...f, purchase_order: e.target.value }))}
-                className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none" style={{ backgroundColor: '#0D1B2A' }} />
+                className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background" />
             </div>
             <div>
-              <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Issue Type *</label>
+              <label className="block text-xs font-medium mb-1 text-muted-foreground">Issue Type *</label>
               <select required value={form.issue_type} onChange={e => setForm(f => ({ ...f, issue_type: e.target.value }))}
-                className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none" style={{ backgroundColor: '#0D1B2A' }}>
+                className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background">
                 {ISSUE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Vendor</label>
+              <label className="block text-xs font-medium mb-1 text-muted-foreground">Vendor</label>
               <select value={form.vendor_id} onChange={e => handleVendorChange(e.target.value)}
-                className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none" style={{ backgroundColor: '#0D1B2A' }}>
+                className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background">
                 <option value="">Select vendor...</option>
                 {vendors.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
               </select>
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Description</label>
+            <label className="block text-xs font-medium mb-1 text-muted-foreground">Description</label>
             <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3}
               placeholder="Describe the issue in detail..."
-              className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none resize-none" style={{ backgroundColor: '#0D1B2A' }} />
+              className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none resize-none bg-background" />
           </div>
 
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={onClose} className="px-4 py-2 rounded text-sm font-medium border border-white/20 text-white hover:bg-white/5">Cancel</button>
-            <button type="submit" className="px-4 py-2 rounded text-sm font-semibold text-white" style={{ backgroundColor: '#3B82F6' }}>
+            <button type="submit" className="px-4 py-2 rounded text-sm font-semibold text-white bg-primary">
               Submit Return Log
             </button>
           </div>
@@ -147,9 +146,9 @@ export default function Returns() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Returns & Log</h1>
-          <p className="text-sm mt-0.5" style={{ color: '#64748b' }}>Damaged parts, wrong items, and return requests</p>
+          <p className="text-sm mt-0.5 text-muted-foreground">Damaged parts, wrong items, and return requests</p>
         </div>
-        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 px-4 py-2 rounded text-sm font-semibold text-white" style={{ backgroundColor: '#3B82F6' }}>
+        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 px-4 py-2 rounded text-sm font-semibold text-white bg-primary">
           <Plus className="w-4 h-4" /> Log Return
         </button>
       </div>
@@ -159,7 +158,7 @@ export default function Returns() {
         {['All', ...LOG_STATUSES].map(s => (
           <button key={s} onClick={() => setStatusFilter(s)}
             className="px-3 py-1.5 rounded text-xs font-medium transition-colors"
-            style={{ backgroundColor: statusFilter === s ? '#3B82F6' : '#1E3A5F', color: statusFilter === s ? '#fff' : '#94a3b8' }}>
+            style={{ backgroundColor: statusFilter === s ? 'hsl(var(--primary))' : 'hsl(var(--secondary))', color: statusFilter === s ? '#fff' : 'hsl(var(--muted-foreground))' }}>
             {s}
           </button>
         ))}
@@ -169,32 +168,32 @@ export default function Returns() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10" style={{ backgroundColor: '#0D1B2A' }}>
+              <tr className="border-b border-border bg-background/50">
                 {['Photo', 'Part #', 'PO #', 'Issue Type', 'Vendor', 'Description', 'Report Date', 'Status', 'Actions'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider" style={{ color: '#64748b' }}>{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={9} className="text-center py-10" style={{ color: '#64748b' }}>Loading...</td></tr>
+                <tr><td colSpan={9} className="text-center py-10 text-muted-foreground">Loading...</td></tr>
               ) : filtered.length === 0 ? (
-                <tr><td colSpan={9} className="text-center py-10" style={{ color: '#64748b' }}>No return logs. Use "Log Return" to report a damaged or incorrect part.</td></tr>
+                <tr><td colSpan={9} className="text-center py-10 text-muted-foreground">No return logs. Use "Log Return" to report a damaged or incorrect part.</td></tr>
               ) : filtered.map(ret => (
-                <tr key={ret.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                <tr key={ret.id} className="border-b border-border/40 hover:bg-white/5 transition-colors">
                   <td className="px-4 py-3">
                     {ret.photo_url ? (
                       <img src={ret.photo_url} alt="part" className="w-14 h-14 object-cover rounded" />
                     ) : (
-                      <div className="w-14 h-14 rounded flex items-center justify-center text-xs" style={{ backgroundColor: '#1E3A5F', color: '#64748b' }}>No img</div>
+                      <div className="w-14 h-14 rounded flex items-center justify-center text-xs bg-secondary text-muted-foreground">No img</div>
                     )}
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs" style={{ color: '#3B82F6' }}>{ret.part_number}</td>
-                  <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>{ret.purchase_order || '—'}</td>
+                  <td className="px-4 py-3 font-mono text-xs text-primary">{ret.part_number}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{ret.purchase_order || '—'}</td>
                   <td className="px-4 py-3"><StatusBadge status={ret.issue_type} /></td>
                   <td className="px-4 py-3 text-xs text-white">{ret.vendor_name || '—'}</td>
-                  <td className="px-4 py-3 text-xs max-w-[160px] truncate" style={{ color: '#94a3b8' }}>{ret.description || '—'}</td>
-                  <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>
+                  <td className="px-4 py-3 text-xs max-w-[160px] truncate text-muted-foreground">{ret.description || '—'}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">
                     {ret.created_date ? new Date(ret.created_date).toLocaleDateString() : '—'}
                   </td>
                   <td className="px-4 py-3"><StatusBadge status={ret.log_status} /></td>
@@ -202,8 +201,7 @@ export default function Returns() {
                     <select
                       value={ret.log_status}
                       onChange={e => handleStatusUpdate(ret.id, e.target.value)}
-                      className="text-xs px-2 py-1 rounded border border-white/20 text-white focus:outline-none"
-                      style={{ backgroundColor: '#0D1B2A' }}
+                      className="text-xs px-2 py-1 rounded border border-border text-white focus:outline-none bg-background"
                     >
                       {LOG_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>

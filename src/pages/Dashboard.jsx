@@ -37,10 +37,10 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
-          <p className="text-sm mt-0.5" style={{ color: '#64748b' }}>Real-time vendor parts fulfillment status</p>
+          <p className="text-sm mt-0.5" className="text-muted-foreground">Real-time vendor parts fulfillment status</p>
         </div>
         <Link to="/orders">
-          <button className="px-4 py-2 rounded text-sm font-semibold text-white transition-colors hover:opacity-90" style={{ backgroundColor: '#3B82F6' }}>
+          <button className="px-4 py-2 rounded text-sm font-semibold text-white transition-colors hover:opacity-90 bg-primary">
             Canvass Orders
           </button>
         </Link>
@@ -60,7 +60,7 @@ export default function Dashboard() {
       {/* Active Orders Table */}
       <SectionCard title="Active Orders Table" action={
         <Link to="/orders">
-          <button className="px-3 py-1.5 rounded text-xs font-semibold text-white" style={{ backgroundColor: '#3B82F6' }}>
+          <button className="px-3 py-1.5 rounded text-xs font-semibold text-white bg-primary">
             View All Orders
           </button>
         </Link>
@@ -70,27 +70,27 @@ export default function Dashboard() {
             <thead>
               <tr className="border-b border-white/10" style={{ backgroundColor: '#0D1B2A' }}>
                 {['Part Number', 'PO #', 'Vendor', 'Order #', 'Tracking', 'Status'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider" style={{ color: '#64748b' }}>{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider" className="text-muted-foreground">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={6} className="text-center py-8" style={{ color: '#64748b' }}>Loading orders...</td></tr>
+                <tr><td colSpan={6} className="text-center py-8 text-muted-foreground">Loading orders...</td></tr>
               ) : activeOrders.slice(0, 10).length === 0 ? (
-                <tr><td colSpan={6} className="text-center py-8" style={{ color: '#64748b' }}>No active orders. Import orders to get started.</td></tr>
+                <tr><td colSpan={6} className="text-center py-8 text-muted-foreground">No active orders. Import orders to get started.</td></tr>
               ) : activeOrders.slice(0, 10).map(order => (
-                <tr key={order.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="px-4 py-3 font-mono text-xs" style={{ color: '#3B82F6' }}>{order.part_number}</td>
-                  <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>{order.purchase_order}</td>
+                <tr key={order.id} className="border-b border-border/40 hover:bg-white/5 transition-colors">
+                  <td className="px-4 py-3 font-mono text-xs text-primary">{order.part_number}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{order.purchase_order}</td>
                   <td className="px-4 py-3 text-xs text-white">{order.vendor_name || '—'}</td>
-                  <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>{order.vendor_order_number || '—'}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{order.vendor_order_number || '—'}</td>
                   <td className="px-4 py-3">
                     {order.tracking_number ? (
-                      <span className="flex items-center gap-1 text-xs" style={{ color: '#3B82F6' }}>
+                      <span className="flex items-center gap-1 text-xs text-primary">
                         {order.tracking_number} <ExternalLink className="w-3 h-3" />
                       </span>
-                    ) : <span className="text-xs" style={{ color: '#475569' }}>Pending</span>}
+                    ) : <span className="text-xs text-muted-foreground/60">Pending</span>}
                   </td>
                   <td className="px-4 py-3"><StatusBadge status={order.status} /></td>
                 </tr>
@@ -103,7 +103,7 @@ export default function Dashboard() {
       {/* Damaged & Return Log */}
       <SectionCard title="Damaged & Return Log" action={
         <Link to="/returns">
-          <button className="px-3 py-1.5 rounded text-xs font-semibold text-white" style={{ backgroundColor: '#1E3A5F', border: '1px solid #3B82F6' }}>
+          <button className="px-3 py-1.5 rounded text-xs font-semibold text-white bg-secondary border border-primary/50">
             Detail of Returns
           </button>
         </Link>
@@ -111,29 +111,29 @@ export default function Dashboard() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10" style={{ backgroundColor: '#0D1B2A' }}>
+              <tr className="border-b border-border bg-background/50">
                 {['Photo', 'Part #', 'Issue Type', 'Report Date', 'Log Status'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider" style={{ color: '#64748b' }}>{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={5} className="text-center py-8" style={{ color: '#64748b' }}>Loading...</td></tr>
+                <tr><td colSpan={5} className="text-center py-8 text-muted-foreground">Loading...</td></tr>
               ) : returns.slice(0, 5).length === 0 ? (
-                <tr><td colSpan={5} className="text-center py-8" style={{ color: '#64748b' }}>No return logs yet.</td></tr>
+                <tr><td colSpan={5} className="text-center py-8 text-muted-foreground">No return logs yet.</td></tr>
               ) : returns.slice(0, 5).map(ret => (
-                <tr key={ret.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                <tr key={ret.id} className="border-b border-border/40 hover:bg-white/5 transition-colors">
                   <td className="px-4 py-3">
                     {ret.photo_url ? (
                       <img src={ret.photo_url} alt="part" className="w-12 h-12 object-cover rounded" />
                     ) : (
-                      <div className="w-12 h-12 rounded flex items-center justify-center text-xs" style={{ backgroundColor: '#1E3A5F', color: '#64748b' }}>No img</div>
+                      <div className="w-12 h-12 rounded flex items-center justify-center text-xs bg-secondary text-muted-foreground">No img</div>
                     )}
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs" style={{ color: '#3B82F6' }}>{ret.part_number}</td>
+                  <td className="px-4 py-3 font-mono text-xs text-primary">{ret.part_number}</td>
                   <td className="px-4 py-3"><StatusBadge status={ret.issue_type} /></td>
-                  <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">
                     {ret.created_date ? new Date(ret.created_date).toLocaleDateString() : '—'}
                   </td>
                   <td className="px-4 py-3"><StatusBadge status={ret.log_status} /></td>
