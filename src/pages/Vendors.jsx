@@ -22,10 +22,10 @@ function VendorModal({ vendor, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
-      <div className="w-full max-w-lg rounded-xl border border-white/10 overflow-hidden" style={{ backgroundColor: '#152A45' }}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <div className="w-full max-w-lg rounded-xl border border-border overflow-hidden bg-card">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <h3 className="text-lg font-semibold text-white">{vendor ? 'Edit Vendor' : 'Add Vendor'}</h3>
-          <button onClick={onClose}><X className="w-5 h-5 text-slate-400" /></button>
+          <button onClick={onClose}><X className="w-5 h-5 text-muted-foreground" /></button>
         </div>
         <form onSubmit={e => { e.preventDefault(); onSave(form); }} className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -37,27 +37,25 @@ function VendorModal({ vendor, onClose, onSave }) {
               { label: 'Directory', key: 'directory' },
             ].map(({ label, key, required, type }) => (
               <div key={key} className={key === 'directory' ? 'col-span-2' : ''}>
-                <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>{label}</label>
+                <label className="block text-xs font-medium mb-1 text-muted-foreground">{label}</label>
                 <input type={type || 'text'} required={required} value={form[key] || ''}
                   onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                  className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none"
-                  style={{ backgroundColor: '#0D1B2A' }} />
+                  className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background" />
               </div>
             ))}
           </div>
 
           <div>
-            <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Part Categories</label>
+            <label className="block text-xs font-medium mb-1 text-muted-foreground">Part Categories</label>
             <div className="flex gap-2 mb-2">
               <input value={catInput} onChange={e => setCatInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addCategory())}
                 placeholder="e.g. Engine, Brakes..."
-                className="flex-1 px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none"
-                style={{ backgroundColor: '#0D1B2A' }} />
-              <button type="button" onClick={addCategory} className="px-3 py-2 rounded text-sm font-medium text-white" style={{ backgroundColor: '#1E3A5F' }}>Add</button>
+                className="flex-1 px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background" />
+              <button type="button" onClick={addCategory} className="px-3 py-2 rounded text-sm font-medium text-white bg-secondary border border-border">Add</button>
             </div>
             <div className="flex flex-wrap gap-2">
               {(form.part_categories || []).map(cat => (
-                <span key={cat} className="flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium" style={{ backgroundColor: '#1E3A5F', color: '#3B82F6' }}>
+                <span key={cat} className="flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-secondary text-primary">
                   {cat}
                   <button type="button" onClick={() => removeCategory(cat)}><X className="w-3 h-3" /></button>
                 </span>
@@ -66,11 +64,10 @@ function VendorModal({ vendor, onClose, onSave }) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Rating (1-5)</label>
+            <label className="block text-xs font-medium mb-1 text-muted-foreground">Rating (1-5)</label>
             <input type="number" min={1} max={5} value={form.avg_score || 5}
               onChange={e => setForm(f => ({ ...f, avg_score: Number(e.target.value) }))}
-              className="w-24 px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none"
-              style={{ backgroundColor: '#0D1B2A' }} />
+              className="w-24 px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background" />
           </div>
 
           <div className="flex items-center gap-2">
@@ -79,8 +76,8 @@ function VendorModal({ vendor, onClose, onSave }) {
           </div>
 
           <div className="flex justify-end gap-3 pt-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 rounded text-sm font-medium border border-white/20 text-white hover:bg-white/5">Cancel</button>
-            <button type="submit" className="px-4 py-2 rounded text-sm font-semibold text-white" style={{ backgroundColor: '#3B82F6' }}>
+            <button type="button" onClick={onClose} className="px-4 py-2 rounded text-sm font-medium border border-border text-white hover:bg-white/5">Cancel</button>
+            <button type="submit" className="px-4 py-2 rounded text-sm font-semibold text-white bg-primary">
               {vendor ? 'Save Changes' : 'Add Vendor'}
             </button>
           </div>
@@ -100,10 +97,10 @@ function RuleModal({ onClose, onSave, vendors }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
-      <div className="w-full max-w-md rounded-xl border border-white/10 overflow-hidden" style={{ backgroundColor: '#152A45' }}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <div className="w-full max-w-md rounded-xl border border-border overflow-hidden bg-card">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <h3 className="text-lg font-semibold text-white">Add Routing Rule</h3>
-          <button onClick={onClose}><X className="w-5 h-5 text-slate-400" /></button>
+          <button onClick={onClose}><X className="w-5 h-5 text-muted-foreground" /></button>
         </div>
         <form onSubmit={e => { e.preventDefault(); onSave(form); }} className="p-6 space-y-4">
           {[
@@ -112,29 +109,28 @@ function RuleModal({ onClose, onSave, vendors }) {
             { label: 'Priority', key: 'priority', type: 'number' },
           ].map(({ label, key, required, type }) => (
             <div key={key}>
-              <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>{label}</label>
+              <label className="block text-xs font-medium mb-1 text-muted-foreground">{label}</label>
               <input type={type || 'text'} required={required} value={form[key] || ''}
                 onChange={e => setForm(f => ({ ...f, [key]: type === 'number' ? Number(e.target.value) : e.target.value }))}
-                className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none"
-                style={{ backgroundColor: '#0D1B2A' }} />
+                className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background" />
             </div>
           ))}
           <div>
-            <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Description</label>
+            <label className="block text-xs font-medium mb-1 text-muted-foreground">Description</label>
             <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2}
-              className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none resize-none" style={{ backgroundColor: '#0D1B2A' }} />
+              className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none resize-none bg-background" />
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Assigned Vendor *</label>
+            <label className="block text-xs font-medium mb-1 text-muted-foreground">Assigned Vendor *</label>
             <select required value={form.vendor_id} onChange={e => handleVendorChange(e.target.value)}
-              className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none" style={{ backgroundColor: '#0D1B2A' }}>
+              className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background">
               <option value="">Select vendor...</option>
               {vendors.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
             </select>
           </div>
           <div className="flex justify-end gap-3 pt-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 rounded text-sm font-medium border border-white/20 text-white hover:bg-white/5">Cancel</button>
-            <button type="submit" className="px-4 py-2 rounded text-sm font-semibold text-white" style={{ backgroundColor: '#3B82F6' }}>Add Rule</button>
+            <button type="button" onClick={onClose} className="px-4 py-2 rounded text-sm font-medium border border-border text-white hover:bg-white/5">Cancel</button>
+            <button type="submit" className="px-4 py-2 rounded text-sm font-semibold text-white bg-primary">Add Rule</button>
           </div>
         </form>
       </div>
@@ -201,37 +197,37 @@ export default function Vendors() {
     <div className="space-y-6 max-w-7xl mx-auto">
       <div>
         <h1 className="text-2xl font-bold text-white">Vendor Management & Routing</h1>
-        <p className="text-sm mt-0.5" style={{ color: '#64748b' }}>Manage vendors and configure routing rules</p>
+        <p className="text-sm mt-0.5 text-muted-foreground">Manage vendors and configure routing rules</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Vendor List */}
         <SectionCard title="Vendor List" action={
           <button onClick={() => { setEditVendor(null); setShowVendorModal(true); }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold text-white" style={{ backgroundColor: '#3B82F6' }}>
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold text-white bg-primary">
             <Plus className="w-3.5 h-3.5" /> Add Vendor
           </button>
         }>
           <div>
-            <div className="grid grid-cols-4 gap-2 px-4 py-2.5 border-b border-white/10 text-xs font-semibold uppercase tracking-wider" style={{ color: '#64748b', backgroundColor: '#0D1B2A' }}>
+            <div className="grid grid-cols-4 gap-2 px-4 py-2.5 border-b border-border text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-background/50">
               <span>Vendor</span>
               <span>Contact</span>
               <span>Orders</span>
               <span>Rating</span>
             </div>
             {loading ? (
-              <p className="text-center py-8 text-sm" style={{ color: '#64748b' }}>Loading...</p>
+              <p className="text-center py-8 text-sm text-muted-foreground">Loading...</p>
             ) : vendors.length === 0 ? (
-              <p className="text-center py-8 text-sm" style={{ color: '#64748b' }}>No vendors yet.</p>
+              <p className="text-center py-8 text-sm text-muted-foreground">No vendors yet.</p>
             ) : vendors.map(v => (
-              <div key={v.id} className="grid grid-cols-4 gap-2 px-4 py-3 border-b border-white/5 hover:bg-white/5 transition-colors items-center">
+              <div key={v.id} className="grid grid-cols-4 gap-2 px-4 py-3 border-b border-border/40 hover:bg-white/5 transition-colors items-center">
                 <div>
                   <p className="text-sm font-medium text-white">{v.name}</p>
-                  <p className="text-xs" style={{ color: '#64748b' }}>{v.directory || 'Directory'}</p>
+                  <p className="text-xs text-muted-foreground">{v.directory || 'Directory'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-white">{v.key_contact || '—'}</p>
-                  <p className="text-xs" style={{ color: '#64748b' }}>{v.email}</p>
+                  <p className="text-xs text-muted-foreground">{v.email}</p>
                 </div>
                 <div>
                   <p className="text-xs text-white">{v.total_orders || 0}</p>
@@ -257,29 +253,29 @@ export default function Vendors() {
         {/* Routing Rules */}
         <SectionCard title="Routing Rules" action={
           <button onClick={() => setShowRuleModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold text-white" style={{ backgroundColor: '#3B82F6' }}>
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold text-white bg-primary">
             <Plus className="w-3.5 h-3.5" /> Add Rule
           </button>
         }>
           <div>
-            <div className="px-4 py-2.5 border-b border-white/10 text-xs font-semibold uppercase tracking-wider" style={{ color: '#64748b', backgroundColor: '#0D1B2A' }}>
+            <div className="px-4 py-2.5 border-b border-border text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-background/50">
               Rules Description
             </div>
             {loading ? (
-              <p className="text-center py-8 text-sm" style={{ color: '#64748b' }}>Loading...</p>
+              <p className="text-center py-8 text-sm text-muted-foreground">Loading...</p>
             ) : rules.length === 0 ? (
-              <p className="text-center py-8 text-sm" style={{ color: '#64748b' }}>No routing rules configured.</p>
+              <p className="text-center py-8 text-sm text-muted-foreground">No routing rules configured.</p>
             ) : rules.map(rule => (
-              <div key={rule.id} className="flex items-start justify-between px-4 py-3 border-b border-white/5 hover:bg-white/5 transition-colors gap-3">
+              <div key={rule.id} className="flex items-start justify-between px-4 py-3 border-b border-border/40 hover:bg-white/5 transition-colors gap-3">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-white">{rule.rule_name}</p>
-                  {rule.description && <p className="text-xs mt-0.5" style={{ color: '#64748b' }}>{rule.description}</p>}
+                  {rule.description && <p className="text-xs mt-0.5 text-muted-foreground">{rule.description}</p>}
                   <div className="flex gap-2 mt-1.5 flex-wrap">
                     {rule.part_category && (
-                      <span className="text-xs px-2 py-0.5 rounded" style={{ backgroundColor: '#1E3A5F', color: '#3B82F6' }}>{rule.part_category}</span>
+                      <span className="text-xs px-2 py-0.5 rounded bg-secondary text-primary">{rule.part_category}</span>
                     )}
                     {rule.vendor_name && (
-                      <span className="text-xs px-2 py-0.5 rounded" style={{ backgroundColor: '#0D1B2A', color: '#94a3b8' }}>→ {rule.vendor_name}</span>
+                      <span className="text-xs px-2 py-0.5 rounded bg-background text-muted-foreground">→ {rule.vendor_name}</span>
                     )}
                   </div>
                 </div>
