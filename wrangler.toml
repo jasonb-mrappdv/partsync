@@ -6,7 +6,7 @@ pages_build_output_dir = "./dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "partsync"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "1643aae7-e4f8-44b1-a1dc-b8e339849487"
 migrations_dir = "migrations"
 
 [[r2_buckets]]
@@ -15,7 +15,7 @@ bucket_name = "partsync-uploads"
 
 [[kv_namespaces]]
 binding = "SESSIONS"
-id = "00000000000000000000000000000000"
+id = "664a6ea0b1ac49f39842c0fd52070e15"
 
 [vars]
 APP_ENV = "production"
