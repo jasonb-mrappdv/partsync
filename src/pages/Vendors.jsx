@@ -183,7 +183,11 @@ export default function Vendors() {
 
   const handleDeleteRule = async (id) => {
     if (!confirm('Delete this rule?')) return;
-    await base44.entities.RoutingRule.delete(id);
+    try {
+      await base44.entities.RoutingRule.delete(id);
+    } catch (e) {
+      // Already deleted — ignore "not found" and just refresh
+    }
     fetchData();
   };
 
