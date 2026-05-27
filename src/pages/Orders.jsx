@@ -4,7 +4,8 @@ import SectionCard from '@/components/SectionCard';
 import StatusBadge from '@/components/StatusBadge';
 import { Plus, Upload, Search, X, ExternalLink, Ban, AlertCircle } from 'lucide-react';
 
-const STATUSES = ['Pending', 'In Transit', 'Shipped', 'Delivered', 'Cancelled', 'Back Ordered'];
+const STATUSES = ['Pending', 'Shipped', 'Delivered', 'Back Ordered'];
+const ALL_STATUSES = ['Pending', 'In Transit', 'Shipped', 'Delivered', 'Cancelled', 'Back Ordered'];
 
 function OrderModal({ order, vendors, onClose, onSave }) {
   const [form, setForm] = useState(order || {
@@ -73,7 +74,7 @@ function OrderModal({ order, vendors, onClose, onSave }) {
                 onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
                 className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background"
               >
-                {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+                {ALL_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
           </div>
@@ -232,19 +233,12 @@ export default function Orders() {
     fetchOrders();
   };
 
-  const handleCancel = async (id) => {
-    if (!confirm('Cancel this order?')) return;
-    await base44.entities.PartOrder.update(id, { status: 'Cancelled' });
-    fetchOrders();
-  };
-
-  const handleCancelBackorder = async (id) => {
-    if (!confirm('Cancel this back ordered part?')) return;
-    await base44.entities.PartOrder.update(id, { status: 'Cancelled', is_backordered: false });
-    fetchOrders();
-  };
-
   const backOrdered = orders.filter(o => o.is_backordered && o.status !== 'Cancelled');
+
+  const getVendorUrl = (order) => {
+    const vendor = vendors.find(v => v.id === order.vendor_id);
+    return vendor?.directory || null;
+  };
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
@@ -324,11 +318,16 @@ export default function Orders() {
                   <td className="px-4 py-3">
                    <div className="flex gap-2">
                      <button onClick={() => { setEditOrder(order); setShowModal(true); }} className="text-xs px-2 py-1 rounded border border-white/20 text-white hover:bg-white/10">Edit</button>
-                     {order.status !== 'Cancelled' && order.status !== 'Delivered' && (
-                       <button onClick={() => handleCancel(order.id)} className="text-xs px-2 py-1 rounded text-orange-400 border border-orange-900/50 hover:bg-orange-900/20 flex items-center gap-1">
-                         <Ban className="w-3 h-3" /> Cancel
-                       </button>
-                     )}
+                     {order.status !== 'Cancelled' && order.status !== 'Delivered' && getVendorUrl(order) && (
+                        <a
+                          href={getVendorUrl(order)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs px-2 py-1 rounded text-orange-400 border border-orange-900/50 hover:bg-orange-900/20 flex items-center gap-1"
+                        >
+                          <Ban className="w-3 h-3" /> Cancel
+                        </a>
+                      )}
                      <button onClick={() => handleDelete(order.id)} className="text-xs px-2 py-1 rounded text-red-400 border border-red-900/50 hover:bg-red-900/20">Del</button>
                    </div>
                   </td>
@@ -373,9 +372,16 @@ export default function Orders() {
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
                       <button onClick={() => { setEditOrder(order); setShowModal(true); }} className="text-xs px-2 py-1 rounded border border-white/20 text-white hover:bg-white/10">Edit</button>
-                      <button onClick={() => handleCancelBackorder(order.id)} className="text-xs px-2 py-1 rounded text-orange-400 border border-orange-900/50 hover:bg-orange-900/20 flex items-center gap-1">
-                        <Ban className="w-3 h-3" /> Cancel
-                      </button>
+                      {getVendorUrl(order) && (
+                        <a
+                          href={getVendorUrl(order)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs px-2 py-1 rounded text-orange-400 border border-orange-900/50 hover:bg-orange-900/20 flex items-center gap-1"
+                        >
+                          <Ban className="w-3 h-3" /> Cancel
+                        </a>
+                      )}
                     </div>
                   </td>
                 </tr>
