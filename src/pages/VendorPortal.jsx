@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import SectionCard from '@/components/SectionCard';
 import StatusBadge from '@/components/StatusBadge';
-import { Package, X, CheckCircle, Clock, Truck } from 'lucide-react';
+import { Package, X, CheckCircle, Clock, Truck, Eye } from 'lucide-react';
 
 const VENDOR_STATUSES = ['Pending', 'In Transit', 'Shipped', 'Delivered'];
 
@@ -68,19 +68,29 @@ function UpdateOrderModal({ order, onClose, onSave }) {
 export default function VendorPortal() {
   const [user, setUser] = useState(null);
   const [vendor, setVendor] = useState(null);
+  const [allVendors, setAllVendors] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editOrder, setEditOrder] = useState(null);
   const [statusFilter, setStatusFilter] = useState('All');
+  const [adminPreviewId, setAdminPreviewId] = useState('');
 
-  const fetchData = async (u) => {
-    const allVendors = await base44.entities.Vendor.list();
-    const myVendor = allVendors.find(v => v.email?.toLowerCase() === u.email?.toLowerCase());
+  const isAdmin = user?.role === 'admin';
+
+  const fetchData = async (u, previewVendorId = null) => {
+    const vendors = await base44.entities.Vendor.list();
+    setAllVendors(vendors);
+
+    const myVendor = previewVendorId
+      ? vendors.find(v => v.id === previewVendorId)
+      : vendors.find(v => v.email?.toLowerCase() === u.email?.toLowerCase());
     setVendor(myVendor);
 
     if (myVendor) {
       const allOrders = await base44.entities.PartOrder.list('-created_date', 200);
       setOrders(allOrders.filter(o => o.vendor_id === myVendor.id));
+    } else {
+      setOrders([]);
     }
     setLoading(false);
   };
@@ -92,10 +102,17 @@ export default function VendorPortal() {
     });
   }, []);
 
+  const handleAdminPreview = (vendorId) => {
+    setAdminPreviewId(vendorId);
+    setStatusFilter('All');
+    setLoading(true);
+    fetchData(user, vendorId || null);
+  };
+
   const handleSave = async (id, form) => {
     await base44.entities.PartOrder.update(id, form);
     setEditOrder(null);
-    fetchData(user);
+    fetchData(user, adminPreviewId || null);
   };
 
   const filtered = orders.filter(o => statusFilter === 'All' || o.status === statusFilter);
@@ -111,7 +128,7 @@ export default function VendorPortal() {
     <div className="flex items-center justify-center h-64 text-muted-foreground">Loading your orders...</div>
   );
 
-  if (!vendor) return (
+  if (!vendor && !isAdmin) return (
     <div className="max-w-lg mx-auto mt-20 text-center space-y-3">
       <Package className="w-12 h-12 mx-auto text-muted-foreground" />
       <h2 className="text-xl font-bold text-white">No Vendor Profile Found</h2>
@@ -119,8 +136,38 @@ export default function VendorPortal() {
     </div>
   );
 
+  if (!vendor && isAdmin) return (
+    <div className="max-w-lg mx-auto mt-20 text-center space-y-3">
+      <Eye className="w-12 h-12 mx-auto text-muted-foreground" />
+      <h2 className="text-xl font-bold text-white">Admin Preview Mode</h2>
+      <p className="text-muted-foreground text-sm mb-4">Select a vendor to preview their portal.</p>
+      <select
+        value={adminPreviewId}
+        onChange={e => handleAdminPreview(e.target.value)}
+        className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-secondary"
+      >
+        <option value="">Select a vendor...</option>
+        {allVendors.map(v => <option key={v.id} value={v.id}>{v.name} — {v.email}</option>)}
+      </select>
+    </div>
+  );
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
+      {isAdmin && (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-primary/30 bg-primary/10">
+          <Eye className="w-4 h-4 text-primary shrink-0" />
+          <span className="text-sm text-primary font-medium">Admin Preview:</span>
+          <select
+            value={adminPreviewId}
+            onChange={e => handleAdminPreview(e.target.value)}
+            className="flex-1 px-3 py-1.5 rounded text-sm text-white border border-border focus:outline-none bg-background max-w-xs"
+          >
+            <option value="">Select a vendor...</option>
+            {allVendors.map(v => <option key={v.id} value={v.id}>{v.name} — {v.email}</option>)}
+          </select>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">{vendor.name} — Vendor Portal</h1>
