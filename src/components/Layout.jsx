@@ -45,13 +45,23 @@ export default function Layout() {
       <nav className="sticky top-0 z-50 border-b border-border bg-popover">
         <div className="flex items-center justify-between px-6 py-3">
           {/* Logo */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-md flex items-center justify-center bg-primary">
-              <Package className="w-4 h-4 text-white" />
-            </div>
+          <div className="flex items-center gap-3">
+            {/* Chain link icon */}
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 10.5C23.5 9 25.5 8 27.5 8C31.6 8 35 11.4 35 15.5C35 19.6 31.6 23 27.5 23L23 23C21.3 23 19.8 22.3 18.7 21.2" stroke="#F97316" strokeWidth="3.5" strokeLinecap="round" fill="none"/>
+              <path d="M14 25.5C12.5 27 10.5 28 8.5 28C4.4 28 1 24.6 1 20.5C1 16.4 4.4 13 8.5 13L13 13C14.7 13 16.2 13.7 17.3 14.8" stroke="white" strokeWidth="3.5" strokeLinecap="round" fill="none"/>
+              <path d="M13 20.5L23 15.5" stroke="#F97316" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+            </svg>
             <div>
-              <span className="text-white font-bold text-lg tracking-tight">PartFlow<span className="text-primary">Pro</span></span>
-              <span className="hidden md:inline-block ml-2 text-xs text-muted-foreground border border-border px-1.5 py-0.5 rounded">{portalLabel}</span>
+              <div className="flex items-baseline gap-0">
+                <span className="text-white font-extrabold text-xl tracking-tight leading-none">PartFlow</span>
+                <span className="text-[#F97316] font-extrabold text-xl tracking-tight leading-none">Pro</span>
+              </div>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="text-[#F97316] font-bold text-[10px] tracking-widest uppercase leading-none">B2B</span>
+                <span className="text-white/60 text-[10px] tracking-wide leading-none">Parts Link</span>
+                <span className="hidden md:inline-block ml-1 text-[10px] text-muted-foreground border border-border px-1.5 py-0.5 rounded">{portalLabel}</span>
+              </div>
             </div>
           </div>
 
