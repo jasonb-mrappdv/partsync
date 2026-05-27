@@ -1,0 +1,43 @@
+{
+  "name": "Vendor",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "key_contact": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "directory": {
+      "type": "string"
+    },
+    "part_categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Part categories this vendor handles"
+    },
+    "avg_score": {
+      "type": "number"
+    },
+    "total_orders": {
+      "type": "number",
+      "default": 0
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "email"
+  ]
+}

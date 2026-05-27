@@ -1,0 +1,53 @@
+{
+  "name": "ReturnLog",
+  "type": "object",
+  "properties": {
+    "part_number": {
+      "type": "string"
+    },
+    "purchase_order": {
+      "type": "string"
+    },
+    "vendor_id": {
+      "type": "string"
+    },
+    "vendor_name": {
+      "type": "string"
+    },
+    "issue_type": {
+      "type": "string",
+      "enum": [
+        "Damaged in Transit",
+        "Wrong Item",
+        "Defective"
+      ]
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "URL of the uploaded photo"
+    },
+    "description": {
+      "type": "string"
+    },
+    "log_status": {
+      "type": "string",
+      "enum": [
+        "Reported",
+        "Under Review",
+        "Resolved"
+      ],
+      "default": "Reported"
+    },
+    "reported_by": {
+      "type": "string"
+    },
+    "order_id": {
+      "type": "string",
+      "description": "Reference to PartOrder"
+    }
+  },
+  "required": [
+    "part_number",
+    "issue_type"
+  ]
+}

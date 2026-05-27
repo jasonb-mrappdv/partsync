@@ -1,0 +1,69 @@
+{
+  "name": "PartOrder",
+  "type": "object",
+  "properties": {
+    "part_number": {
+      "type": "string",
+      "description": "Part number from the source system"
+    },
+    "purchase_order": {
+      "type": "string",
+      "description": "Purchase order number"
+    },
+    "vendor_id": {
+      "type": "string",
+      "description": "Assigned vendor ID"
+    },
+    "vendor_name": {
+      "type": "string",
+      "description": "Assigned vendor name"
+    },
+    "vendor_order_number": {
+      "type": "string",
+      "description": "Order number provided by vendor"
+    },
+    "tracking_number": {
+      "type": "string",
+      "description": "Shipping tracking number"
+    },
+    "estimated_delivery": {
+      "type": "string",
+      "format": "date",
+      "description": "Estimated delivery date"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Customer email for notifications"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Customer name"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Pending",
+        "In Transit",
+        "Shipped",
+        "Delivered",
+        "Cancelled"
+      ],
+      "default": "Pending"
+    },
+    "notification_sent": {
+      "type": "boolean",
+      "default": false
+    },
+    "notes": {
+      "type": "string"
+    },
+    "part_category": {
+      "type": "string",
+      "description": "Category used for routing"
+    }
+  },
+  "required": [
+    "part_number",
+    "purchase_order"
+  ]
+}
