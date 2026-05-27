@@ -90,16 +90,16 @@ export default function Layout() {
           </div>
 
           {/* Right side — portal label + user */}
-          <div className="flex items-center gap-4 min-w-[180px] justify-end">
-            <span className="hidden md:block text-[11px] text-muted-foreground border border-border/60 px-2.5 py-1 rounded-md whitespace-nowrap">
+          <div className="flex items-center gap-3 min-w-[220px] justify-end">
+            <span className="text-[11px] text-muted-foreground border border-border/60 px-2.5 py-1 rounded-md whitespace-nowrap">
               {portalLabel}
             </span>
-            <div className="flex items-center gap-2.5 border-l border-border pl-4">
+            <div className="flex items-center gap-2.5 border-l border-border pl-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold bg-secondary shrink-0">
                 {initials}
               </div>
-              <div className="hidden md:block">
-                <p className="text-white text-sm font-medium leading-tight">{user?.full_name || user?.email || '...'}</p>
+              <div>
+                <p className="text-white text-sm font-medium leading-tight whitespace-nowrap">{user?.full_name || user?.email || '—'}</p>
                 <p className="text-[11px] text-primary capitalize leading-tight">{user?.role || 'user'}</p>
               </div>
             </div>
