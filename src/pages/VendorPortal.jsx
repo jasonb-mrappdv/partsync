@@ -101,8 +101,9 @@ export default function VendorPortal() {
   useEffect(() => {
     base44.auth.me().then(u => {
       setUser(u);
+      // fetchData sets loading=false when done
       fetchData(u);
-    });
+    }).catch(() => setLoading(false));
   }, []);
 
   const handleAdminPreview = (vendorId) => {
@@ -127,31 +128,37 @@ export default function VendorPortal() {
     delivered: orders.filter(o => o.status === 'Delivered').length,
   };
 
-  if (loading) return (
-    <div className="flex items-center justify-center h-64 text-muted-foreground">Loading your orders...</div>
+  // Show loading only while we haven't determined user yet
+  if (loading && !user) return (
+    <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>
   );
 
-  if (!vendor && !isAdmin) return (
-    <div className="max-w-lg mx-auto mt-20 text-center space-y-3">
-      <Package className="w-12 h-12 mx-auto text-muted-foreground" />
-      <h2 className="text-xl font-bold text-white">No Vendor Profile Found</h2>
-      <p className="text-muted-foreground text-sm">Your account email (<span className="text-primary">{user?.email}</span>) is not linked to a vendor. Please contact the administrator.</p>
-    </div>
-  );
-
+  // Admin with no vendor selected yet — show selector
   if (!vendor && isAdmin) return (
     <div className="max-w-lg mx-auto mt-20 text-center space-y-3">
       <Eye className="w-12 h-12 mx-auto text-muted-foreground" />
       <h2 className="text-xl font-bold text-white">Admin Preview Mode</h2>
       <p className="text-muted-foreground text-sm mb-4">Select a vendor to preview their portal.</p>
-      <select
-        value={adminPreviewId}
-        onChange={e => handleAdminPreview(e.target.value)}
-        className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-secondary"
-      >
-        <option value="">Select a vendor...</option>
-        {allVendors.map(v => <option key={v.id} value={v.id}>{v.name} — {v.email}</option>)}
-      </select>
+      {loading ? (
+        <p className="text-sm text-muted-foreground">Loading vendors...</p>
+      ) : (
+        <select
+          value={adminPreviewId}
+          onChange={e => handleAdminPreview(e.target.value)}
+          className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-secondary"
+        >
+          <option value="">Select a vendor...</option>
+          {allVendors.map(v => <option key={v.id} value={v.id}>{v.name} — {v.email}</option>)}
+        </select>
+      )}
+    </div>
+  );
+
+  if (!vendor) return (
+    <div className="max-w-lg mx-auto mt-20 text-center space-y-3">
+      <Package className="w-12 h-12 mx-auto text-muted-foreground" />
+      <h2 className="text-xl font-bold text-white">No Vendor Profile Found</h2>
+      <p className="text-muted-foreground text-sm">Your account email (<span className="text-primary">{user?.email}</span>) is not linked to a vendor. Please contact the administrator.</p>
     </div>
   );
 
