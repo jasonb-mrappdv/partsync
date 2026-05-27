@@ -25,10 +25,10 @@ function OrderModal({ order, vendors, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
-      <div className="w-full max-w-2xl rounded-xl border border-white/10 overflow-hidden" style={{ backgroundColor: '#152A45' }}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <div className="w-full max-w-2xl rounded-xl border border-border overflow-hidden bg-card">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <h3 className="text-lg font-semibold text-white">{order ? 'Edit Order' : 'New Part Order'}</h3>
-          <button onClick={onClose}><X className="w-5 h-5 text-slate-400" /></button>
+          <button onClick={onClose}><X className="w-5 h-5 text-muted-foreground" /></button>
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
           <div className="grid grid-cols-2 gap-4">
@@ -43,56 +43,52 @@ function OrderModal({ order, vendors, onClose, onSave }) {
               { label: 'Est. Delivery', key: 'estimated_delivery', type: 'date' },
             ].map(({ label, key, required, type }) => (
               <div key={key}>
-                <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>{label}</label>
+                <label className="block text-xs font-medium mb-1 text-muted-foreground">{label}</label>
                 <input
                   type={type || 'text'}
                   required={required}
                   value={form[key] || ''}
                   onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                  className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none focus:border-blue-500"
-                  style={{ backgroundColor: '#0D1B2A' }}
+                  className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none focus:border-primary bg-background"
                 />
               </div>
             ))}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Vendor</label>
+              <label className="block text-xs font-medium mb-1 text-muted-foreground">Vendor</label>
               <select
                 value={form.vendor_id || ''}
                 onChange={e => handleVendorChange(e.target.value)}
-                className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none"
-                style={{ backgroundColor: '#0D1B2A' }}
+                className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background"
               >
                 <option value="">Select vendor...</option>
                 {vendors.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Status</label>
+              <label className="block text-xs font-medium mb-1 text-muted-foreground">Status</label>
               <select
                 value={form.status || 'Pending'}
                 onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-                className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none"
-                style={{ backgroundColor: '#0D1B2A' }}
+                className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background"
               >
                 {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1" style={{ color: '#94a3b8' }}>Notes</label>
+            <label className="block text-xs font-medium mb-1 text-muted-foreground">Notes</label>
             <textarea
               value={form.notes || ''}
               onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
               rows={2}
-              className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none"
-              style={{ backgroundColor: '#0D1B2A' }}
+              className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-background"
             />
           </div>
           <div className="flex justify-end gap-3 pt-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 rounded text-sm font-medium border border-white/20 text-white hover:bg-white/5">Cancel</button>
-            <button type="submit" className="px-4 py-2 rounded text-sm font-semibold text-white" style={{ backgroundColor: '#3B82F6' }}>
+            <button type="button" onClick={onClose} className="px-4 py-2 rounded text-sm font-medium border border-border text-white hover:bg-white/5">Cancel</button>
+            <button type="submit" className="px-4 py-2 rounded text-sm font-semibold text-white bg-primary">
               {order ? 'Save Changes' : 'Add Order'}
             </button>
           </div>
@@ -137,13 +133,13 @@ function CsvImportModal({ vendors, onClose, onImport }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
-      <div className="w-full max-w-2xl rounded-xl border border-white/10 overflow-hidden" style={{ backgroundColor: '#152A45' }}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <div className="w-full max-w-2xl rounded-xl border border-border overflow-hidden bg-card">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <h3 className="text-lg font-semibold text-white">Import Orders from CSV</h3>
-          <button onClick={onClose}><X className="w-5 h-5 text-slate-400" /></button>
+          <button onClick={onClose}><X className="w-5 h-5 text-muted-foreground" /></button>
         </div>
         <div className="p-6 space-y-4">
-          <p className="text-xs" style={{ color: '#94a3b8' }}>
+          <p className="text-xs text-muted-foreground">
             Paste CSV data below. Expected columns: part_number, purchase_order, customer_email, customer_name, part_category, vendor_name
           </p>
           <textarea
@@ -151,15 +147,14 @@ function CsvImportModal({ vendors, onClose, onImport }) {
             onChange={e => setCsv(e.target.value)}
             rows={8}
             placeholder="part_number,purchase_order,customer_email,customer_name&#10;ABC123,PO-001,customer@example.com,John Doe"
-            className="w-full px-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none font-mono"
-            style={{ backgroundColor: '#0D1B2A' }}
+            className="w-full px-3 py-2 rounded text-sm text-white border border-border focus:outline-none font-mono bg-background"
           />
           {preview.length > 0 && (
-            <p className="text-xs" style={{ color: '#4ade80' }}>✓ {preview.length} rows parsed successfully</p>
+            <p className="text-xs text-green-400">✓ {preview.length} rows parsed successfully</p>
           )}
           <div className="flex justify-end gap-3">
-            <button onClick={handleParse} className="px-4 py-2 rounded text-sm font-medium border border-white/20 text-white hover:bg-white/5">Preview</button>
-            <button onClick={handleImport} disabled={!csv.trim()} className="px-4 py-2 rounded text-sm font-semibold text-white disabled:opacity-50" style={{ backgroundColor: '#3B82F6' }}>
+            <button onClick={handleParse} className="px-4 py-2 rounded text-sm font-medium border border-border text-white hover:bg-white/5">Preview</button>
+            <button onClick={handleImport} disabled={!csv.trim()} className="px-4 py-2 rounded text-sm font-semibold text-white disabled:opacity-50 bg-primary">
               Import Orders
             </button>
           </div>
@@ -228,13 +223,13 @@ export default function Orders() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Order Status</h1>
-          <p className="text-sm mt-0.5" style={{ color: '#64748b' }}>Manage and track all part orders</p>
+          <p className="text-sm mt-0.5 text-muted-foreground">Manage and track all part orders</p>
         </div>
         <div className="flex gap-2">
           <button onClick={() => setShowImport(true)} className="flex items-center gap-2 px-4 py-2 rounded text-sm font-medium border border-white/20 text-white hover:bg-white/5">
             <Upload className="w-4 h-4" /> Import CSV
           </button>
-          <button onClick={() => { setEditOrder(null); setShowModal(true); }} className="flex items-center gap-2 px-4 py-2 rounded text-sm font-semibold text-white" style={{ backgroundColor: '#3B82F6' }}>
+          <button onClick={() => { setEditOrder(null); setShowModal(true); }} className="flex items-center gap-2 px-4 py-2 rounded text-sm font-semibold text-white bg-primary">
             <Plus className="w-4 h-4" /> Add Order
           </button>
         </div>
@@ -243,13 +238,12 @@ export default function Orders() {
       {/* Filters */}
       <div className="flex gap-3 items-center">
         <div className="relative flex-1 max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#64748b' }} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search part #, PO, vendor..."
-            className="w-full pl-9 pr-3 py-2 rounded text-sm text-white border border-white/10 focus:outline-none"
-            style={{ backgroundColor: '#152A45' }}
+            className="w-full pl-9 pr-3 py-2 rounded text-sm text-white border border-border focus:outline-none bg-secondary"
           />
         </div>
         <div className="flex gap-1">
@@ -259,8 +253,8 @@ export default function Orders() {
               onClick={() => setStatusFilter(s)}
               className="px-3 py-1.5 rounded text-xs font-medium transition-colors"
               style={{
-                backgroundColor: statusFilter === s ? '#3B82F6' : '#1E3A5F',
-                color: statusFilter === s ? '#fff' : '#94a3b8',
+                backgroundColor: statusFilter === s ? 'hsl(var(--primary))' : 'hsl(var(--secondary))',
+                color: statusFilter === s ? '#fff' : 'hsl(var(--muted-foreground))',
               }}
             >{s}</button>
           ))}
@@ -271,31 +265,31 @@ export default function Orders() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10" style={{ backgroundColor: '#0D1B2A' }}>
+              <tr className="border-b border-border bg-background/50">
                 {['Part Number', 'PO #', 'Vendor', 'Order #', 'Tracking', 'Est. Delivery', 'Status', 'Actions'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider" style={{ color: '#64748b' }}>{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={8} className="text-center py-10" style={{ color: '#64748b' }}>Loading...</td></tr>
+                <tr><td colSpan={8} className="text-center py-10 text-muted-foreground">Loading...</td></tr>
               ) : filtered.length === 0 ? (
-                <tr><td colSpan={8} className="text-center py-10" style={{ color: '#64748b' }}>No orders found.</td></tr>
+                <tr><td colSpan={8} className="text-center py-10 text-muted-foreground">No orders found.</td></tr>
               ) : filtered.map(order => (
-                <tr key={order.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="px-4 py-3 font-mono text-xs" style={{ color: '#3B82F6' }}>{order.part_number}</td>
-                  <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>{order.purchase_order}</td>
+                <tr key={order.id} className="border-b border-border/40 hover:bg-white/5 transition-colors">
+                  <td className="px-4 py-3 font-mono text-xs text-primary">{order.part_number}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{order.purchase_order}</td>
                   <td className="px-4 py-3 text-xs text-white">{order.vendor_name || '—'}</td>
-                  <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>{order.vendor_order_number || '—'}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{order.vendor_order_number || '—'}</td>
                   <td className="px-4 py-3">
                     {order.tracking_number ? (
-                      <span className="flex items-center gap-1 text-xs" style={{ color: '#3B82F6' }}>
+                      <span className="flex items-center gap-1 text-xs text-primary">
                         {order.tracking_number}<ExternalLink className="w-3 h-3" />
                       </span>
-                    ) : <span className="text-xs" style={{ color: '#475569' }}>—</span>}
+                    ) : <span className="text-xs text-muted-foreground/60">—</span>}
                   </td>
-                  <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">
                     {order.estimated_delivery ? new Date(order.estimated_delivery).toLocaleDateString() : '—'}
                   </td>
                   <td className="px-4 py-3"><StatusBadge status={order.status} /></td>
