@@ -81,9 +81,12 @@ export default function VendorPortal() {
     const vendors = await base44.entities.Vendor.list();
     setAllVendors(vendors);
 
+    const isAdminUser = u?.role === 'admin';
     const myVendor = previewVendorId
       ? vendors.find(v => v.id === previewVendorId)
-      : vendors.find(v => v.email?.toLowerCase() === u.email?.toLowerCase());
+      : isAdminUser
+        ? null
+        : vendors.find(v => v.email?.toLowerCase() === u.email?.toLowerCase());
     setVendor(myVendor);
 
     if (myVendor) {
