@@ -28,7 +28,7 @@ export default function Layout() {
   let navLinks = adminLinks;
   let portalLabel = 'Admin Portal';
   if (user?.role === 'vendor') { navLinks = vendorLinks; portalLabel = 'Vendor Portal'; }
-  else if (user?.role === 'technician') { navLinks = technicianLinks; portalLabel = 'Tech Portal'; }
+  else if (user?.role === 'technician') { navLinks = technicianLinks; portalLabel = 'User Portal'; }
 
 
 
@@ -82,8 +82,11 @@ export default function Layout() {
             })}
           </div>
 
-          {/* Right side — user email */}
-          <div className="flex items-center min-w-[220px] justify-end">
+          {/* Right side — portal label + user email */}
+          <div className="flex items-center gap-3 min-w-[220px] justify-end">
+            <span className="text-[11px] text-muted-foreground border border-border/60 px-2.5 py-1 rounded-md whitespace-nowrap">
+              {portalLabel}
+            </span>
             <p className="text-white text-sm font-medium whitespace-nowrap">{user?.email || '...'}</p>
           </div>
 
