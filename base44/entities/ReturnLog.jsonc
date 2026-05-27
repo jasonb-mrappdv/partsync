@@ -34,6 +34,7 @@
       "enum": [
         "Reported",
         "Returned",
+        "Not Returnable",
         "Credited",
         "Denied"
       ],

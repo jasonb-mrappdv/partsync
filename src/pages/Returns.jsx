@@ -5,7 +5,7 @@ import StatusBadge from '@/components/StatusBadge';
 import { Plus, Camera, X, Upload } from 'lucide-react';
 
 const ISSUE_TYPES = ['Damaged in Transit', 'Wrong Item', 'Defective'];
-const LOG_STATUSES = ['Reported', 'Returned', 'Credited', 'Denied'];
+const LOG_STATUSES = ['Reported', 'Returned', 'Not Returnable', 'Credited', 'Denied'];
 
 function ReturnModal({ onClose, onSave, vendors }) {
   const [form, setForm] = useState({
@@ -139,7 +139,12 @@ export default function Returns() {
     fetchData();
   };
 
-  const filtered = returns.filter(r => statusFilter === 'All' || r.log_status === statusFilter);
+  // "Reported" filter only shows items still in Reported status (excludes Returned/Not Returnable)
+  const filtered = returns.filter(r => {
+    if (statusFilter === 'All') return true;
+    if (statusFilter === 'Reported') return r.log_status === 'Reported';
+    return r.log_status === statusFilter;
+  });
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
