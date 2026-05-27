@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useAuth } from '@/lib/AuthContext';
 import SectionCard from '@/components/SectionCard';
 import StatusBadge from '@/components/StatusBadge';
 import { Package, X, CheckCircle, Clock, Truck, Eye } from 'lucide-react';
@@ -66,7 +67,7 @@ function UpdateOrderModal({ order, onClose, onSave }) {
 }
 
 export default function VendorPortal() {
-  const [user, setUser] = useState(null);
+  const { user } = useAuth();
   const [vendor, setVendor] = useState(null);
   const [allVendors, setAllVendors] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -99,17 +100,14 @@ export default function VendorPortal() {
   };
 
   useEffect(() => {
-    base44.auth.me().then(u => {
-      setUser(u);
-      // fetchData sets loading=false when done
-      fetchData(u);
-    }).catch(() => setLoading(false));
-  }, []);
+    if (user !== null && user !== undefined) {
+      fetchData(user);
+    }
+  }, [user]);
 
   const handleAdminPreview = (vendorId) => {
     setAdminPreviewId(vendorId);
     setStatusFilter('All');
-    setLoading(true);
     fetchData(user, vendorId || null);
   };
 
@@ -128,8 +126,8 @@ export default function VendorPortal() {
     delivered: orders.filter(o => o.status === 'Delivered').length,
   };
 
-  // Show loading only while we haven't determined user yet
-  if (loading && !user) return (
+  // Show loading only while user hasn't resolved yet
+  if (!user) return (
     <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>
   );
 
