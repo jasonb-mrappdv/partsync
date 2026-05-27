@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import SectionCard from '@/components/SectionCard';
+import TechnicianQuarterlyLog from '@/components/TechnicianQuarterlyLog';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 const COLORS = ['#3B82F6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
@@ -9,14 +10,17 @@ export default function Reports() {
   const [orders, setOrders] = useState([]);
   const [returns, setReturns] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     Promise.all([
       base44.entities.PartOrder.list('-created_date', 500),
-      base44.entities.ReturnLog.list('-created_date', 200),
-    ]).then(([o, r]) => {
+      base44.entities.ReturnLog.list('-created_date', 500),
+      base44.auth.me(),
+    ]).then(([o, r, u]) => {
       setOrders(o);
       setReturns(r);
+      setUser(u);
       setLoading(false);
     });
   }, []);
@@ -72,9 +76,9 @@ export default function Reports() {
         <SectionCard title="Order Status Breakdown">
           <div className="p-4 h-64">
             {loading ? (
-              <div className="flex items-center justify-center h-full" style={{ color: '#64748b' }}>Loading...</div>
+              <div className="flex items-center justify-center h-full text-muted-foreground">Loading...</div>
             ) : statusData.length === 0 ? (
-              <div className="flex items-center justify-center h-full" style={{ color: '#64748b' }}>No data yet</div>
+              <div className="flex items-center justify-center h-full text-muted-foreground">No data yet</div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -93,16 +97,16 @@ export default function Reports() {
         <SectionCard title="Orders by Vendor">
           <div className="p-4 h-64">
             {loading ? (
-              <div className="flex items-center justify-center h-full" style={{ color: '#64748b' }}>Loading...</div>
+              <div className="flex items-center justify-center h-full text-muted-foreground">Loading...</div>
             ) : vendorData.length === 0 ? (
-              <div className="flex items-center justify-center h-full" style={{ color: '#64748b' }}>No vendor data yet</div>
+              <div className="flex items-center justify-center h-full text-muted-foreground">No vendor data yet</div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={vendorData} layout="vertical" margin={{ left: 60 }}>
                   <XAxis type="number" tick={{ fill: '#64748b', fontSize: 10 }} axisLine={false} tickLine={false} />
                   <YAxis type="category" dataKey="name" tick={{ fill: '#94a3b8', fontSize: 10 }} axisLine={false} tickLine={false} width={55} />
                   <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
-                  <Bar dataKey="count" fill="#3B82F6" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="count" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             )}
@@ -113,9 +117,9 @@ export default function Reports() {
         <SectionCard title="Return Issues Breakdown">
           <div className="p-4 h-64">
             {loading ? (
-              <div className="flex items-center justify-center h-full" style={{ color: '#64748b' }}>Loading...</div>
+              <div className="flex items-center justify-center h-full text-muted-foreground">Loading...</div>
             ) : issueData.length === 0 ? (
-              <div className="flex items-center justify-center h-full" style={{ color: '#64748b' }}>No return data yet</div>
+              <div className="flex items-center justify-center h-full text-muted-foreground">No return data yet</div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -130,6 +134,11 @@ export default function Reports() {
           </div>
         </SectionCard>
       </div>
+
+      {/* Admin-only: Quarterly Technician Return Log */}
+      {user?.role === 'admin' && (
+        <TechnicianQuarterlyLog returns={returns} />
+      )}
     </div>
   );
 }

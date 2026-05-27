@@ -1,0 +1,36 @@
+{
+  "name": "TechnicianLog",
+  "type": "object",
+  "properties": {
+    "technician_name": {
+      "type": "string",
+      "description": "Name of the technician"
+    },
+    "technician_email": {
+      "type": "string",
+      "description": "Email of the technician"
+    },
+    "quarter": {
+      "type": "string",
+      "description": "Quarter label e.g. Q1 2025"
+    },
+    "year": {
+      "type": "number"
+    },
+    "quarter_number": {
+      "type": "number",
+      "description": "1-4"
+    },
+    "return_count": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "technician_name",
+    "quarter"
+  ]
+}
