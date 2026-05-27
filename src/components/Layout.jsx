@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
+import { useAuth } from '@/lib/AuthContext';
 import { LayoutDashboard, ShoppingCart, RotateCcw, Building2, BarChart3, Wrench, Store } from 'lucide-react';
 
 const adminLinks = [
@@ -21,11 +20,7 @@ const technicianLinks = [
 
 export default function Layout() {
   const location = useLocation();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+  const { user } = useAuth();
 
   const isVendorPath = location.pathname.startsWith('/vendor-portal');
   const isTechPath = location.pathname.startsWith('/technician-portal');
@@ -35,9 +30,7 @@ export default function Layout() {
   if (user?.role === 'vendor') { navLinks = vendorLinks; portalLabel = 'Vendor Portal'; }
   else if (user?.role === 'technician') { navLinks = technicianLinks; portalLabel = 'Tech Portal'; }
 
-  const initials = user?.full_name
-    ? user.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-    : user?.email?.[0]?.toUpperCase() || 'U';
+  const initials = user?.email?.split('@')[0]?.slice(0, 2).toUpperCase() || 'U';
 
   return (
     <div className="min-h-screen font-inter bg-background">
@@ -99,7 +92,7 @@ export default function Layout() {
                 {initials}
               </div>
               <div>
-                <p className="text-white text-sm font-medium leading-tight whitespace-nowrap">{user?.full_name || user?.email || 'Loading...'}</p>
+                <p className="text-white text-sm font-medium leading-tight whitespace-nowrap">{user?.email?.split('@')[0] || '...'}</p>
                 <p className="text-[11px] text-primary capitalize leading-tight">{user?.role || 'user'}</p>
               </div>
             </div>
