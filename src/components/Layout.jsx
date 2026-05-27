@@ -99,7 +99,7 @@ export default function Layout() {
                 {initials}
               </div>
               <div>
-                <p className="text-white text-sm font-medium leading-tight whitespace-nowrap">{user?.full_name || user?.email || '—'}</p>
+                <p className="text-white text-sm font-medium leading-tight whitespace-nowrap">{user?.full_name || user?.email || 'Loading...'}</p>
                 <p className="text-[11px] text-primary capitalize leading-tight">{user?.role || 'user'}</p>
               </div>
             </div>
