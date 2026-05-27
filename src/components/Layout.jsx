@@ -82,12 +82,10 @@ export default function Layout() {
             })}
           </div>
 
-          {/* Right side — portal label + user email */}
-          <div className="flex items-center gap-3 min-w-[220px] justify-end">
-            <span className="text-[11px] text-muted-foreground border border-border/60 px-2.5 py-1 rounded-md whitespace-nowrap">
-              {portalLabel}
-            </span>
+          {/* Right side — user email + portal label */}
+          <div className="flex flex-col items-end min-w-[220px] justify-center">
             <p className="text-white text-sm font-medium whitespace-nowrap">{user?.email || '...'}</p>
+            <span className="text-[11px] text-muted-foreground whitespace-nowrap">{portalLabel}</span>
           </div>
 
         </div>
